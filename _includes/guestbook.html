@@ -39,7 +39,7 @@
                     // https://github.com/showdownjs/showdown
                     converter = new showdown.Converter();
 
-                li.innerHTML = converter.makeHtml("**" + entry.name + "**" + ":\n\n" + entry.message);
+                li.innerHTML = converter.makeHtml("**" + entry.name + "**" + " said:\n\n" + entry.message);
                 rootEl.insertBefore(li, rootEl.firstElementChild);
             },
 
