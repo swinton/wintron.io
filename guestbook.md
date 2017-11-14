@@ -7,7 +7,7 @@ layout: guestbook
 <form id="sign" method="post" action="https://api.wintron.io/guestbook">
 <div>
 <label for="name">Name:</label>
-<input id="name" placeholder="Your name" />
+<input id="name" type="text" placeholder="Your name" autofocus />
 </div>
 <div>
 <label for="message">Message:</label>
