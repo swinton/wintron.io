@@ -2,6 +2,24 @@
 
 
     (function() {
+
+        var entityMap = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#39;',
+            '/': '&#x2F;',
+            '`': '&#x60;',
+            '=': '&#x3D;'
+        };
+
+        function escapeHtml (string) {
+            return String(string).replace(/[&<>"'`=\/]/g, function fromEntityMap (s) {
+                return entityMap[s];
+            });
+        };
+
         // Guestbook application
         var Guestbook = {
             // Retrieve the Guestbook
@@ -39,7 +57,7 @@
                     // https://github.com/showdownjs/showdown
                     converter = new showdown.Converter();
 
-                li.innerHTML = converter.makeHtml("**" + entry.name + "**" + " said:\n\n" + entry.message);
+                li.innerHTML = converter.makeHtml("**" + escapeHtml(entry.name) + "**" + " said:\n\n" + escapeHtml(entry.message));
                 rootEl.insertBefore(li, rootEl.firstElementChild);
             },
 
