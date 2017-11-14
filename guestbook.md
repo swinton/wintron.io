@@ -4,7 +4,7 @@ layout: guestbook
 
 ## Please sign my guestbook
 
-<form method="post" action="https://api.wintron.io/guestbook">
+<form id="sign" method="post" action="https://api.wintron.io/guestbook">
 <div>
 <label for="name">Name:</label>
 <input id="name" placeholder="Your name" />
@@ -19,8 +19,8 @@ layout: guestbook
 
 ___
 
-## Previous guests
+## Previous entries
 
-<ul>
+<ul id="entries">
 
 </ul>
