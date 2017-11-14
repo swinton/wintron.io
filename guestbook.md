@@ -1,5 +1,6 @@
 ---
 layout: guestbook
+redirect_from: "/guestbook/"
 ---
 
 ## Please sign my guestbook
