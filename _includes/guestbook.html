@@ -2,7 +2,6 @@
 
 
     (function() {
-
         // Guestbook application
         var Guestbook = {
             // Retrieve the Guestbook
@@ -35,8 +34,12 @@
             // Render a Guestbook entry
             renderEntry: function(entry) {
                 var rootEl = document.getElementById("entries"),
-                    li = document.createElement("li");
-                li.append(entry.name + ": " + entry.message);
+                    li = document.createElement("li"),
+                    // Showdown used for Markdown parsing
+                    // https://github.com/showdownjs/showdown
+                    converter = new showdown.Converter();
+
+                li.innerHTML = converter.makeHtml("**" + entry.name + "**" + ":\n\n" + entry.message);
                 rootEl.insertBefore(li, rootEl.firstElementChild);
             },
 
