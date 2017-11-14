@@ -57,7 +57,13 @@
                     // https://github.com/showdownjs/showdown
                     converter = new showdown.Converter();
 
+                // Enable emoji
+                converter.setOption("emoji", true);
+
+                // Render entry from Markdown
                 li.innerHTML = converter.makeHtml("**" + escapeHtml(entry.name) + "**" + " said:\n\n" + escapeHtml(entry.message));
+
+                // Insert entry on page
                 rootEl.insertBefore(li, rootEl.firstElementChild);
             },
 
