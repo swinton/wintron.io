@@ -11,7 +11,7 @@ layout: guestbook
 </div>
 <div>
 <label for="message">Message:</label>
-<textarea id="message" placeholder="Your message"></textarea>
+<textarea id="message" rows="8" placeholder="Your message"></textarea>
 </div>
 <input type="submit" value="Sign" />
 </form>
