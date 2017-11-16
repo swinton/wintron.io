@@ -1,0 +1,104 @@
+<script>
+
+
+    (function() {
+
+        var entityMap = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#39;',
+            '/': '&#x2F;',
+            '`': '&#x60;',
+            '=': '&#x3D;'
+        };
+
+        function escapeHtml (string) {
+            return String(string).replace(/[&<>"'`=\/]/g, function fromEntityMap (s) {
+                return entityMap[s];
+            });
+        };
+
+        // Guestbook application
+        var Guestbook = {
+            // Retrieve the Guestbook
+            retrieve: function() {
+                var req = new XMLHttpRequest();
+
+                req.onreadystatechange = function process() {
+                    if (req.readyState === XMLHttpRequest.DONE && req.status === 200) {
+                        // Parse the response
+                        var entries = JSON.parse(req.response);
+
+                        // Entries are rendered "oldest-first", so let's reverse to make sure
+                        // the most recent entry is listed at the top of the list
+                        entries.reverse();
+
+                        // Render the Guestbook entries
+                        Guestbook.render(entries);
+                    }
+                };
+
+                req.open("GET", "https://api.wintron.io/guestbook", true);
+                req.send();
+            },
+
+            // Render the Guestbook
+            render: function(entries) {
+                entries.forEach(Guestbook.renderEntry);
+            },
+
+            // Render a Guestbook entry
+            renderEntry: function(entry) {
+                var rootEl = document.getElementById("entries"),
+                    li = document.createElement("li"),
+                    // Showdown used for Markdown parsing
+                    // https://github.com/showdownjs/showdown
+                    converter = new showdown.Converter();
+
+                // Enable emoji
+                converter.setOption("emoji", true);
+
+                // Render entry from Markdown
+                li.innerHTML = converter.makeHtml("**" + escapeHtml(entry.name) + "**" + " said:\n\n" + escapeHtml(entry.message));
+
+                // Insert entry on page
+                rootEl.insertBefore(li, rootEl.firstElementChild);
+            },
+
+            // Sign the Guestbook
+            sign: function(name, message) {
+                var req = new XMLHttpRequest(),
+                    entry = {"name": name, "message": message};
+
+                req.onreadystatechange = function process() {
+                    if (req.readyState === XMLHttpRequest.DONE && req.status === 200) {
+                        // Render the new Guestbook entry
+                        Guestbook.renderEntry(entry);
+                    }
+                };
+
+                req.open("POST", "https://api.wintron.io/guestbook", true);
+                req.setRequestHeader("Content-Type", "application/json");
+                req.send(JSON.stringify(entry));
+            }
+        };
+
+        // Retrieve Guestbook entries on page load
+        document.addEventListener("DOMContentLoaded", Guestbook.retrieve);
+
+        // Sign the Guestbook on form submission
+        document.getElementById("sign").addEventListener("submit", function(event) {
+            event.preventDefault();
+            Guestbook.sign(
+                document.getElementById("name").value,
+                document.getElementById("message").value
+            );
+        });
+
+        // Expose our Guestbook as a global object
+        window.Guestbook = window.Guestbook || Guestbook;
+    })();
+
+</script>

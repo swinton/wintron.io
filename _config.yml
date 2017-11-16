@@ -8,3 +8,5 @@ markdown: kramdown
 exclude: ["README.md"]
 sass:
   style: compressed
+plugins:
+  - jekyll-redirect-from
